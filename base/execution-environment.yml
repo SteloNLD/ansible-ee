@@ -5,6 +5,8 @@ images:
     name: python:3.12-slim
 
 dependencies:
+  python_interpreter:
+    python_path: /usr/local/bin/python3
   python:
     - ansible-core
     - ansible-lint
