@@ -8,7 +8,7 @@ Published to `ghcr.io/stelonld/ansible-ee`.
 
 | EE | Image | Description |
 |---|---|---|
-| [iac](iac) | `ghcr.io/stelonld/ansible-ee/iac:latest` | General-purpose IaC EE — ansible-core, ansible-lint, community.general, community.crypto, ansible.posix |
+| [base](base) | `ghcr.io/stelonld/ansible-ee/base:latest` | General-purpose IaC EE — ansible-core, ansible-lint, community.general, community.crypto, ansible.posix |
 
 ## VS Code
 
@@ -17,7 +17,7 @@ To use an EE with the [VS Code Ansible extension](https://marketplace.visualstud
 ```json
 {
   "ansible.executionEnvironment.enabled": true,
-  "ansible.executionEnvironment.image": "ghcr.io/stelonld/ansible-ee/iac:latest",
+  "ansible.executionEnvironment.image": "ghcr.io/stelonld/ansible-ee/base:latest",
   "ansible.executionEnvironment.containerEngine": "docker",
   "ansible.executionEnvironment.pull.policy": "missing"
 }
@@ -30,7 +30,7 @@ To use an EE with the [VS Code Ansible extension](https://marketplace.visualstud
 ansible-navigator:
   execution-environment:
     enabled: true
-    image: ghcr.io/stelonld/ansible-ee/iac:latest
+    image: ghcr.io/stelonld/ansible-ee/base:latest
     pull:
       policy: missing
 ```

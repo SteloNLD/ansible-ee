@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-iac:
+  build-base:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -27,12 +27,12 @@ jobs:
         run: pip install ansible-builder
 
       - name: Build EE
-        working-directory: iac
+        working-directory: base
         run: |
           ansible-builder build \
-            --tag ghcr.io/stelonld/ansible-ee/iac:latest \
+            --tag ghcr.io/stelonld/ansible-ee/base:latest \
             --container-runtime docker \
             --verbosity 2
 
       - name: Push EE
-        run: docker push ghcr.io/stelonld/ansible-ee/iac:latest
+        run: docker push ghcr.io/stelonld/ansible-ee/base:latest
