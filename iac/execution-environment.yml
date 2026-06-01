@@ -1,0 +1,14 @@
+version: 3
+
+images:
+  base_image:
+    name: ghcr.io/ansible/community-ee-base:latest
+
+dependencies:
+  python:
+    - ansible-lint
+  galaxy:
+    collections:
+      - name: community.general
+      - name: community.crypto
+      - name: ansible.posix
