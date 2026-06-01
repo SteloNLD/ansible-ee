@@ -7,8 +7,9 @@ images:
 dependencies:
   python_interpreter:
     python_path: /usr/local/bin/python3
+  ansible_core:
+    package_pip: ansible-core
   python:
-    - ansible-core
     - ansible-lint
   galaxy:
     collections:
