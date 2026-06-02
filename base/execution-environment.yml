@@ -2,9 +2,15 @@ version: 3
 
 images:
   base_image:
-    name: quay.io/ansible/community-ee-base:latest
+    name: python:3.12-slim
 
 dependencies:
+  python_interpreter:
+    python_path: /usr/local/bin/python3
+  ansible_core:
+    package_pip: ansible-core
+  ansible_runner:
+    package_pip: ansible-runner
   python:
     - ansible-lint
   galaxy:
