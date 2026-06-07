@@ -35,10 +35,10 @@ jobs:
         run: ansible-builder create -f execution-environment.yml -c context
 
       - name: Build and push EE (amd64 + arm64)
-        uses: docker/build-push-action@v6
-        with:
-          context: base/context
-          provenance: false
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ghcr.io/stelonld/ansible-ee/base:latest
+        working-directory: base
+        run: |
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --tag ghcr.io/stelonld/ansible-ee/base:latest \
+            --push \
+            context
