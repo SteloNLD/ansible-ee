@@ -37,8 +37,10 @@ jobs:
       - name: Build and push EE (amd64 + arm64)
         working-directory: base
         run: |
+          ls -la context/
+          file context/Dockerfile || true
           docker buildx build \
             --platform linux/amd64,linux/arm64 \
             --tag ghcr.io/stelonld/ansible-ee/base:latest \
             --push \
-            context
+            ./context
