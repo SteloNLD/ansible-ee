@@ -16,3 +16,7 @@ dependencies:
       - name: community.general
       - name: community.crypto
       - name: ansible.posix
+
+additional_build_steps:
+  append_final:
+    - RUN chgrp -R 0 /opt/app-root/src && chmod -R g=u /opt/app-root/src
