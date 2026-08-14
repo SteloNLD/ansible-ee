@@ -8,7 +8,7 @@ Published to `ghcr.io/stelonld/ansible-ee`.
 
 | EE | Image | Description |
 |---|---|---|
-| [base](base) | `ghcr.io/stelonld/ansible-ee/base:latest` | General-purpose IaC EE — ansible-core, ansible-lint, community.general, community.crypto, ansible.posix |
+| [base](base) | `ghcr.io/stelonld/ansible-ee/base:latest` | General-purpose IaC EE — ansible-core, ansible-lint, community.general, community.crypto, ansible.posix, community.routeros, ansible.netcommon, hetzner.hcloud, vyos.vyos |
 
 ## VS Code
 

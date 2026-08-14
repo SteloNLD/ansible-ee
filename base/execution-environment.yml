@@ -11,11 +11,27 @@ dependencies:
     package_pip: ansible-runner
   python:
     - ansible-lint
+    # hetzner.hcloud SDK (inventory plugin + modules). Auto-introspected from the
+    # collection too, but pinned here so the build fails loudly if it goes missing.
+    - hcloud
+    # network_cli transport for community.routeros over SSH. paramiko rather than
+    # ansible-pylibssh to avoid needing libssh headers at build time.
+    - paramiko
+    # RouterOS API transport for community.routeros api_* modules (api_modify).
+    - librouteros
   galaxy:
     collections:
       - name: community.general
       - name: community.crypto
       - name: ansible.posix
+      # RouterOS management — connection, facts, command, api_modify.
+      - name: community.routeros
+      # Provides the network_cli connection community.routeros rides on.
+      - name: ansible.netcommon
+      # Hetzner Cloud dynamic inventory + resource modules.
+      - name: hetzner.hcloud
+      # VyOS management (network_cli via ansible.netcommon/paramiko above).
+      - name: vyos.vyos
 
 additional_build_steps:
   append_final:
