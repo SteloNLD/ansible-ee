@@ -4,16 +4,10 @@ images:
   base_image:
     name: registry.access.redhat.com/ubi9/python-312:latest
 
-# Build with the image's Python 3.12, not the UBI9 system /usr/bin/python3 (3.9)
-# — on 3.9 pip caps ansible-core at 2.15, too old for the collections.
-options:
-  python_interpreter:
-    python_path: /opt/app-root/bin/python3.12
-
 dependencies:
   ansible_core:
-    # Pinned: unpinned resolved to an ancient 2.15.x, too old for current
-    # ansible.netcommon / community.routeros. Track the current line.
+    # >=2.21 is also a guard: if the python3->3.12 repoint below ever regresses,
+    # 3.9 can't satisfy this and the build fails loudly instead of shipping 2.15.
     package_pip: ansible-core>=2.21
   ansible_runner:
     package_pip: ansible-runner
@@ -42,5 +36,10 @@ dependencies:
       - name: vyos.vyos
 
 additional_build_steps:
+  prepend_base:
+    # UBI9's /usr/bin/python3 is 3.9, which caps ansible-core at 2.15. Repoint it
+    # at the image's own 3.12 (which has pip) so the build gets a current core.
+    - USER root
+    - RUN ln -sf /usr/bin/python3.12 /usr/bin/python3
   append_final:
     - RUN chgrp -R 0 /opt/app-root/src && chmod -R g=u /opt/app-root/src
