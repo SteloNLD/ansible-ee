@@ -2,24 +2,20 @@ version: 3
 
 images:
   base_image:
-    name: registry.access.redhat.com/ubi9/python-312:latest
+    name: quay.io/fedora/fedora:latest
 
 dependencies:
   ansible_core:
-    # >=2.21 is also a guard: if the python3->3.12 repoint below ever regresses,
-    # 3.9 can't satisfy this and the build fails loudly instead of shipping 2.15.
     package_pip: ansible-core>=2.21
   ansible_runner:
     package_pip: ansible-runner
   python:
     - ansible-lint
-    # hetzner.hcloud SDK (inventory plugin + modules). Auto-introspected from the
-    # collection too, but pinned here so the build fails loudly if it goes missing.
+    # hetzner.hcloud SDK (inventory plugin + modules).
     - hcloud
-    # network_cli transport for community.routeros over SSH. paramiko rather than
-    # ansible-pylibssh to avoid needing libssh headers at build time.
+    # network_cli transport for community.routeros / vyos.vyos over SSH.
     - paramiko
-    # RouterOS API transport for community.routeros api_* modules (api_modify).
+    # RouterOS API transport for community.routeros api_* modules.
     - librouteros
   galaxy:
     collections:
@@ -28,18 +24,15 @@ dependencies:
       - name: ansible.posix
       # RouterOS management — connection, facts, command, api_modify.
       - name: community.routeros
-      # Provides the network_cli connection community.routeros rides on.
+      # network_cli connection community.routeros / vyos.vyos ride on.
       - name: ansible.netcommon
       # Hetzner Cloud dynamic inventory + resource modules.
       - name: hetzner.hcloud
-      # VyOS management (network_cli via ansible.netcommon/paramiko above).
+      # VyOS management.
       - name: vyos.vyos
 
 additional_build_steps:
   prepend_base:
-    # UBI9's /usr/bin/python3 is 3.9, which caps ansible-core at 2.15. Repoint it
-    # at the image's own 3.12 (which has pip) so the build gets a current core.
-    - USER root
-    - RUN ln -sf /usr/bin/python3.12 /usr/bin/python3
-  append_final:
-    - RUN chgrp -R 0 /opt/app-root/src && chmod -R g=u /opt/app-root/src
+    # Bare Fedora ships no python; ansible-builder needs it for the pip installs.
+    # (Fedora's python3 is current, so no interpreter juggling like UBI9 needed.)
+    - RUN dnf -y install python3 python3-pip
