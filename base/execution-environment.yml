@@ -2,10 +2,12 @@ version: 3
 
 images:
   base_image:
-    name: quay.io/fedora/fedora:latest
+    name: registry.access.redhat.com/ubi9/python-312:latest
 
 dependencies:
   ansible_core:
+    # >=2.21 is also a guard: if the python3->3.12 repoint below ever regresses,
+    # 3.9 can't satisfy this and the build fails loudly instead of shipping 2.15.
     package_pip: ansible-core>=2.21
   ansible_runner:
     package_pip: ansible-runner
@@ -33,6 +35,10 @@ dependencies:
 
 additional_build_steps:
   prepend_base:
-    # Bare Fedora ships no python; ansible-builder needs it for the pip installs.
-    # (Fedora's python3 is current, so no interpreter juggling like UBI9 needed.)
-    - RUN dnf -y install python3 python3-pip
+    # UBI9's /usr/bin/python3 is 3.9, which caps ansible-core at 2.15. Repoint it
+    # at the image's own 3.12 (which has pip) so the build gets a current core.
+    # NB: not fedora:latest — its python 3.14 is newer than ansible-core supports.
+    - USER root
+    - RUN ln -sf /usr/bin/python3.12 /usr/bin/python3
+  append_final:
+    - RUN chgrp -R 0 /opt/app-root/src && chmod -R g=u /opt/app-root/src
