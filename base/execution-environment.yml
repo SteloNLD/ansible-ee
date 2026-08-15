@@ -4,6 +4,12 @@ images:
   base_image:
     name: registry.access.redhat.com/ubi9/python-312:latest
 
+# Build with the image's Python 3.12, not the UBI9 system /usr/bin/python3 (3.9)
+# — on 3.9 pip caps ansible-core at 2.15, too old for the collections.
+options:
+  python_interpreter:
+    python_path: /opt/app-root/bin/python3.12
+
 dependencies:
   ansible_core:
     # Pinned: unpinned resolved to an ancient 2.15.x, too old for current
