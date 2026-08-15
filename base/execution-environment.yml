@@ -6,7 +6,9 @@ images:
 
 dependencies:
   ansible_core:
-    package_pip: ansible-core
+    # Pinned: unpinned resolved to an ancient 2.15.x, too old for current
+    # ansible.netcommon / community.routeros. Track the current line.
+    package_pip: ansible-core>=2.21
   ansible_runner:
     package_pip: ansible-runner
   python:
