@@ -19,6 +19,8 @@ dependencies:
     - paramiko
     # RouterOS API transport for community.routeros api_* modules.
     - librouteros
+    # Required by community.hashi_vault; it has no other way in.
+    - hvac
   galaxy:
     collections:
       - name: community.general
@@ -32,6 +34,9 @@ dependencies:
       - name: hetzner.hcloud
       # VyOS management.
       - name: vyos.vyos
+      # OpenBao/Vault lookups and modules. OpenBao is API-compatible with Vault,
+      # so this is the collection for it -- there is no openbao-specific one.
+      - name: community.hashi_vault
 
 additional_build_steps:
   prepend_base:
